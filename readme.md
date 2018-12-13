@@ -347,7 +347,7 @@ All server methods, with jsdocs can be found in [lib/methods](lib/methods)
 #### Helpers
 
 ##### `idm.dynamics.getMappings`
-- Returns an object containing lookups and mappings which you can use to pass relevant guids to other dynamics functions.
+- Returns an object containing lookups and roleMappings which you can use to pass relevant guids to other dynamics functions.
 - For example: You can reference the enrolment status id of "complete - approved" by calling `server.methods.idm.dynamics.getMappings().enrolmentStatus.completeApproved`
 
 ##### `idm.dynamics.getToken`

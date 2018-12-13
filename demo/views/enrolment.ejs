@@ -12,20 +12,73 @@
     <div class="grid-row">
         <div class="column-full">
             <% if (parsedAuthzRoles) { %>
-            <h3 class="heading-large">
-                You currently have the following roles:
-            </h3>
-            <pre><%= JSON.stringify(parsedAuthzRoles.flat, null, '\t') %></pre>
+                <h3 class="heading-large">
+                    You currently have the following roles:
+                </h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Organisation</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Update status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% parsedAuthzRoles.flat.forEach(function(enrolment) { %>
+                        <tr>
+                            <th><%= enrolment.serviceName %></th>
+                            <td><%= enrolment.orgName %></td>
+                            <td><%= enrolment.roleName %></td>
+                            <td><%= enrolment.orgRoleStatusName %></td>
+                            <td>
+                                <form method="post">
+                                    <select name="enrolmentStatusId">
+                                        <option value="1">Incomplete</option>
+                                        <option value="2">Pending</option>
+                                        <option value="3">Complete - approved</option>
+                                        <option value="4">Complete - rejected</option>
+                                    </select>
+
+                                    <input type="hidden" name="serviceId" value="<%= enrolment.serviceId %>">
+                                    <input type="hidden" name="orgId" value="<%= enrolment.orgId %>">
+
+                                    <button type="submit">Submit</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
             <% }else{ %>
-            <h3 class="heading-large">
-                You currently have no roles with this service
-            </h3>
+                <h3 class="heading-large">
+                    You currently have no roles
+                </h3>
             <% } %>
 
-            <h3 class="heading-large">Choose your enrolment status</h3>
+            <h3 class="heading-large">Add enrolment </h3>
 
             <form method="post">
-                <select name="enrolmentStatusId">
+                <label for="serviceId">Service</label>
+                <select id="serviceId" name="serviceId">
+                    <% services.forEach(service => { %>
+                        <option value="<%= service.serviceId %>"><%= service.serviceName %></option>
+                    <% }) %>
+                </select>
+                <!--<label for="orgId">Organisation</label>-->
+                <!--<select id="orgId" name="orgId">-->
+                    <!--<% services.forEach(service => { %>-->
+                        <!--<option value="<%= service.serviceId %>"><%= service.serviceName %></option>-->
+                    <!--<% }) %>-->
+                <!--</select>-->
+                <label for="serviceRoleId">Service role</label>
+
+                <select id="serviceRoleId" name="serviceRoleId">
+
+                </select>
+                <label for="enrolmentStatusId">Enrolment status</label>
+                <select id="enrolmentStatusId" name="enrolmentStatusId">
                     <option value="1">Incomplete</option>
                     <option value="2">Pending</option>
                     <option value="3">Complete - approved</option>

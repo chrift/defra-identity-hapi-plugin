@@ -11,9 +11,35 @@ module.exports = [
       const { idm } = request.server.methods
 
       const claims = await idm.getClaims(request)
-      const parsedAuthzRoles = idm.dynamics.parseAuthzRoles(claims)
+
+      const services = await idm.dynamics.readServices()
+      const serviceRoles = await idm.dynamics.readServiceRoles()
+      const serviceEnrolments = await idm.dynamics.readServiceEnrolment(null, claims.contactId)
+
+      const parsedAuthzRoles = idm.dynamics.parseAuthzRoles(serviceEnrolments)
+
+      parsedAuthzRoles.flat.forEach(enrolment => {
+        const {
+          _defra_lobservice_value: serviceId,
+          '_defra_lobservice_value@OData.Community.Display.V1.FormattedValue': serviceName
+        } = serviceRoles.value.find(serviceRole => serviceRole.defra_lobserivceroleid === enrolment.roleId)
+
+        enrolment.serviceId = serviceId
+        enrolment.serviceName = serviceName
+      })
+
+      const serviceRolesByService = {}
+
+      serviceRoles.value.forEach(role => {
+        const serviceRoleArr = serviceRolesByService[role._defra_lobservice_value] = serviceRolesByService[role._defra_lobservice_value] || []
+
+        serviceRoleArr.push({
+
+        })
+      })
 
       return h.view('enrolment', {
+        services,
         idm,
         claims,
         parsedAuthzRoles,
