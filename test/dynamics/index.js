@@ -37,142 +37,198 @@ describe('Dynamics', () => {
   it('should parse authz api response correctly', async () => {
     const { enrolmentStatus } = idm.dynamics.getMappings()
 
+    const managerEnrolmentId = '86ef4140-1fa6-e811-a954-000d3a39c2c8'
+    const managerEnrolmentName = 'manager-enrolment-name'
+    const userEnrolmentId = '86ef4140-1fa6-e811-a954-000d3a39c2c7'
+    const userEnrolmentName = 'user-enrolment-name'
     const orgId = '86ef4140-1fa6-e811-a954-000d3a39c2c9'
     const orgName = '123'
+    const gpg45 = '1'
+    const gpg46 = '2'
     const managerRoleId = 'bfe1c82a-e09b-e811-a94f-000d3a3a8543'
+    const managerRoleName = 'LE Manager'
     const userRoleId = 'dea3a347-e09b-e811-a94f-000d3a3a8543'
+    const userRoleName = 'LE User'
     const pendingStatus = enrolmentStatus.pending
+    const pendingStatusName = 'Pending'
     const completeApprovedStatus = enrolmentStatus.completeApproved
+    const completeApprovedStatusName = 'Complete'
 
     const jwtClaims = {
-      'exp': 1537200994,
-      'nbf': 1537197394,
-      'ver': '1.0',
-      'iss': 'https://login.microsoftonline.com/xxx/v2.0/',
-      'sub': 'xxx',
-      'aud': 'xxx',
-      'acr': 'b2c_1a_scp_signup_signin_roles_dynx',
-      'iat': 1537197394,
-      'auth_time': 1537197394,
-      'email': 'email@email.com',
-      'roles': [
-        `${orgId}:${managerRoleId}:${pendingStatus}`,
-        `${orgId}:${userRoleId}:${completeApprovedStatus}`
+      exp: 1537200994,
+      nbf: 1537197394,
+      ver: '1.0',
+      iss: 'https://login.microsoftonline.com/xxx/v2.0/',
+      sub: 'xxx',
+      aud: 'xxx',
+      acr: 'b2c_1a_scp_signup_signin_roles_dynx',
+      iat: 1537197394,
+      auth_time: 1537197394,
+      email: 'email@email.com',
+      roles: [
+        [managerEnrolmentId, orgId, gpg45, gpg46, managerRoleId, pendingStatus].join(':'),
+        [userEnrolmentId, orgId, gpg45, gpg46, userRoleId, completeApprovedStatus].join(':')
       ],
-      'roleMappings': [
+      roleMappings: [
+        `${managerEnrolmentId}:${managerEnrolmentName}`,
+        `${userEnrolmentId}:${userEnrolmentName}`,
         `${orgId}:${orgName}`,
-        `${managerRoleId}:LE Manager`,
-        `${pendingStatus}:Pending`,
-        `${userRoleId}:LE User`,
-        `${completeApprovedStatus}:Complete (Approved)`
+        `${managerRoleId}:${managerRoleName}`,
+        `${pendingStatus}:${pendingStatusName}`,
+        `${userRoleId}:${userRoleName}`,
+        `${completeApprovedStatus}:${completeApprovedStatusName}`
       ]
     }
 
     const parsedResponse = idm.dynamics.parseAuthzRoles(jwtClaims)
 
     const expectedParsedResponse = {
-      'rolesByOrg': {
+      rolesByOrg: {
         [orgId]: {
-          'organisation': {
-            'id': orgId,
-            'name': orgName
+          organisation: {
+            id: orgId,
+            name: orgName
           },
-          'roles': {
+          roles: {
             [managerRoleId]: {
-              'id': managerRoleId,
-              'name': 'LE Manager',
-              'status': {
-                'id': pendingStatus,
-                'name': 'Pending'
+              id: managerRoleId,
+              name: managerRoleName,
+              gpg45,
+              gpg46,
+              enrolment: {
+                id: managerEnrolmentId,
+                name: managerEnrolmentName
+              },
+              status: {
+                id: pendingStatus,
+                name: pendingStatusName
               }
             },
             [userRoleId]: {
-              'id': userRoleId,
-              'name': 'LE User',
-              'status': {
-                'id': completeApprovedStatus,
-                'name': 'Complete (Approved)'
+              id: userRoleId,
+              name: userRoleName,
+              gpg45,
+              gpg46,
+              enrolment: {
+                id: userEnrolmentId,
+                name: userEnrolmentName
+              },
+              status: {
+                id: completeApprovedStatus,
+                name: completeApprovedStatusName
               }
             }
           }
         }
       },
-      'rolesByStatus': {
-        '2': {
+      rolesByStatus: {
+        [pendingStatus]: {
           [orgId]: {
-            'organisation': {
-              'id': orgId,
-              'name': orgName
+            organisation: {
+              id: orgId,
+              name: orgName
             },
-            'roles': {
+            roles: {
               [managerRoleId]: {
-                'id': managerRoleId,
-                'name': 'LE Manager',
-                'status': {
-                  'id': pendingStatus,
-                  'name': 'Pending'
+                id: managerRoleId,
+                name: managerRoleName,
+                gpg45,
+                gpg46,
+                enrolment: {
+                  id: managerEnrolmentId,
+                  name: managerEnrolmentName
+                },
+                status: {
+                  id: pendingStatus,
+                  name: pendingStatusName
                 }
               }
             }
           }
         },
-        '3': {
+        [completeApprovedStatus]: {
           [orgId]: {
-            'organisation': {
-              'id': orgId,
-              'name': orgName
+            organisation: {
+              id: orgId,
+              name: orgName
             },
-            'roles': {
+            roles: {
               [userRoleId]: {
-                'id': userRoleId,
-                'name': 'LE User',
-                'status': {
-                  'id': completeApprovedStatus,
-                  'name': 'Complete (Approved)'
+                id: userRoleId,
+                name: userRoleName,
+                gpg45,
+                gpg46,
+                enrolment: {
+                  id: userEnrolmentId,
+                  name: userEnrolmentName
+                },
+                status: {
+                  id: completeApprovedStatus,
+                  name: completeApprovedStatusName
                 }
               }
             }
           }
         }
       },
-      'rolesByRole': {
+      rolesByRole: {
         [managerRoleId]: {
           [orgId]: {
-            'id': managerRoleId,
-            'name': 'LE Manager',
-            'status': {
-              'id': pendingStatus,
-              'name': 'Pending'
+            id: managerRoleId,
+            name: managerRoleName,
+            gpg45,
+            gpg46,
+            enrolment: {
+              id: managerEnrolmentId,
+              name: managerEnrolmentName
+            },
+            status: {
+              id: pendingStatus,
+              name: pendingStatusName
             }
           }
         },
         [userRoleId]: {
           [orgId]: {
-            'id': userRoleId,
-            'name': 'LE User',
-            'status': {
-              'id': completeApprovedStatus,
-              'name': 'Complete (Approved)'
+            id: userRoleId,
+            name: userRoleName,
+            gpg45,
+            gpg46,
+            enrolment: {
+              id: userEnrolmentId,
+              name: userEnrolmentName
+            },
+            status: {
+              id: completeApprovedStatus,
+              name: completeApprovedStatusName
             }
           }
         }
       },
-      'flat': [
+      flat: [
         {
-          'roleId': managerRoleId,
-          'roleName': 'LE Manager',
-          'orgId': orgId,
-          'orgName': orgName,
-          'orgRoleStatusIdNumber': pendingStatus,
-          'orgRoleStatusName': 'Pending'
+          enrolmentId: managerEnrolmentId,
+          enrolmentName: managerEnrolmentName,
+          gpg45,
+          gpg46,
+          roleId: managerRoleId,
+          roleName: managerRoleName,
+          orgId: orgId,
+          orgName: orgName,
+          orgRoleStatusIdNumber: pendingStatus,
+          orgRoleStatusName: pendingStatusName
         },
         {
-          'roleId': userRoleId,
-          'roleName': 'LE User',
-          'orgId': orgId,
-          'orgName': orgName,
-          'orgRoleStatusIdNumber': completeApprovedStatus,
-          'orgRoleStatusName': 'Complete (Approved)'
+          enrolmentId: userEnrolmentId,
+          enrolmentName: userEnrolmentName,
+          gpg45,
+          gpg46,
+          roleId: userRoleId,
+          roleName: userRoleName,
+          orgId: orgId,
+          orgName: orgName,
+          orgRoleStatusIdNumber: completeApprovedStatus,
+          orgRoleStatusName: completeApprovedStatusName
         }
       ]
     }
