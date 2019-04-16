@@ -6,6 +6,7 @@ const inert = require('inert')
 const vision = require('vision')
 const ejs = require('ejs')
 const catboxMongo = require('catbox-mongodb')
+const debug = require('debug')('defra-identity:demo:server')
 
 const config = require('./config')
 
@@ -155,6 +156,8 @@ async function start () {
 
   // Refresh our token if it has expired
   server.ext('onPreAuth', async (request, h) => {
+    debug(`Request to ${request.path}`)
+
     // Don't check our credentials for requests for static files
     if (request.route.path !== staticFilePath) {
       const { idm } = request.server.methods
