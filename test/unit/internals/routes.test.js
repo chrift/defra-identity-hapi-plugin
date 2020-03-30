@@ -7,7 +7,7 @@ const lab = exports.lab = Lab.script()
 const { describe, it } = lab
 const { expect } = Code
 
-const RouteMethods = require('../../lib/internals/routes')
+const RouteMethods = require('../../../lib/internals/routes')
 
 describe('Internals - routes', () => {
   describe('storeTokenSetResponse', async () => {

@@ -30,22 +30,7 @@ For enrolment and fetching of user information:
 - Url of the Dynamics instance you are connecting to
 
 # Demo
-This repo includes a demo application in the `demo` directory.
-
-To run the demo
-
-1. Clone this repo
-    - `git clone https://github.com/DEFRA/defra-identity-hapi-plugin.git`
-
-2. Install plugin dependencies
-    - `npm i`
-
-3. Open `demo/.env` and fill in the environment variables
-
-4. Run the demo app
-    - `npm run demo`
-    - The debug module is enabled by default in the demo, so you should see some colourful output in your console detailing what the plugin is doing as the application starts
-    - The blipp module is also included in the demo, so you should see console output showing all the routes exposed by the demo app, along with their auth config
+You can find a demo implementation of this plugin in our [demo service](https://github.com/DEFRA/defra-identity-hapi-plugin-demo).
 
 # Quick start
 ## Installation
@@ -395,7 +380,7 @@ All contributions should be submitted via a pull request.
 
 Please note that the codebase conforms to the [Jaavascript Standard Style](https://standardjs.com/).
 
-Please make sure to run `npm test` before opening any pull requests.
+Please make sure to run `npm test` and `npm run lint` before opening any pull requests.
 
 ## License
 
