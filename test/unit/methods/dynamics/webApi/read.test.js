@@ -7,7 +7,7 @@ const lab = exports.lab = Lab.script()
 const { describe, it, beforeEach, afterEach } = lab
 const { expect } = Code
 
-describe('Dynamics - create', () => {
+describe('Dynamics - read', () => {
   let mock
   let passed
   let read
@@ -45,7 +45,6 @@ describe('Dynamics - create', () => {
           decodeResponse: response => response,
           parseOptionalInteger: num => num,
           mappings: {
-            dateTimeStringToDate: string => string,
             serviceUserLinkStatusCode: { active: uuid() }
           }
         }
@@ -376,7 +375,7 @@ describe('Dynamics - create', () => {
           telephoneNumber: '123',
           mobileNumber: '123',
           termsAcceptedVersion: '12',
-          termsAcceptedOn: '2018-09-17T10:34:00Z'
+          termsAcceptedOn: new Date('2018-09-17T10:34:00Z')
         }
       ]
 
