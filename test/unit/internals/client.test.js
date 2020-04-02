@@ -7,7 +7,7 @@ const lab = exports.lab = Lab.script()
 const { describe, it, beforeEach, afterEach } = lab
 const { expect } = Code
 
-describe('Internals', () => {
+describe('Internals - client', () => {
   let mock
   let passed
   let outcome
