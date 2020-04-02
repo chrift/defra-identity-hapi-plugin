@@ -28,8 +28,8 @@ describe('Dynamics - create', () => {
       builtUrl: Symbol('built url'),
       internals: {
         dynamics: {
-          requestPromise: async (options) => {
-            passed.requestPromise.options = options
+          got: async (options) => {
+            passed.got.options = options
           },
           buildHeaders: async (headers) => {
             passed.buildHeaders.headers = headers

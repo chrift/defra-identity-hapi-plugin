@@ -20,7 +20,7 @@ describe('Dynamics - create', () => {
       buildHeaders: {
         headers: null
       },
-      requestPromise: {
+      got: {
         options: null
       }
     }
@@ -32,8 +32,8 @@ describe('Dynamics - create', () => {
       builtUrl: Symbol('built url'),
       internals: {
         dynamics: {
-          requestPromise: async (options) => {
-            passed.requestPromise.options = options
+          got: async (options) => {
+            passed.got.options = options
           },
           buildHeaders: async (headers) => {
             passed.buildHeaders.headers = headers
@@ -62,7 +62,7 @@ describe('Dynamics - create', () => {
 
     it('should build headers', () => expect(passed.buildHeaders.headers).to.equal(undefined))
     it('should built url', () => expect(passed.buildUrl.path).to.equal(`/defra_lobserviceuserlinks(${mock.lobServiceUserLinkId})/Microsoft.Dynamics.CRM.defra_deleteenrolment`))
-    it('should make the request', () => expect(passed.requestPromise.options).to.equal({
+    it('should make the request', () => expect(passed.got.options).to.equal({
       method: 'POST',
       url: mock.builtUrl,
       headers: mock.builtHeaders

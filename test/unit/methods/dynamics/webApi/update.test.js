@@ -25,8 +25,8 @@ describe('Dynamics - update', async () => {
       builtHeaders: Symbol('built headers'),
       internals: {
         dynamics: {
-          requestPromise: async (options) => {
-            passed.requestPromise.options = options
+          got: async (options) => {
+            passed.got.options = options
           },
           buildHeaders: async (headers) => {
             passed.buildHeaders.headers = headers
