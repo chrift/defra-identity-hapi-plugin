@@ -1,9 +1,10 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const uuid = require('uuid/v4')
+const td = require('testdouble')
 const lab = exports.lab = Lab.script()
 
-const { describe, it, beforeEach } = lab
+const { describe, it, beforeEach, afterEach } = lab
 const { expect } = Code
 
 describe('Dynamics - create', () => {
@@ -11,6 +12,8 @@ describe('Dynamics - create', () => {
   let passed
   let dynamicsDelete
   let outcome
+
+  afterEach(td.reset)
 
   beforeEach(() => {
     passed = {
@@ -32,9 +35,6 @@ describe('Dynamics - create', () => {
       builtUrl: Symbol('built url'),
       internals: {
         dynamics: {
-          got: async (options) => {
-            passed.got.options = options
-          },
           buildHeaders: async (headers) => {
             passed.buildHeaders.headers = headers
 
@@ -47,8 +47,15 @@ describe('Dynamics - create', () => {
           },
           decodeResponse: () => mock.decodedResponse
         }
+      },
+      modules: {
+        got: async (options) => {
+          passed.got.options = options
+        }
       }
     }
+
+    td.replace('got', mock.modules.got)
 
     const Delete = require('../../../../../lib/methods/dynamics/webApi/delete')
 

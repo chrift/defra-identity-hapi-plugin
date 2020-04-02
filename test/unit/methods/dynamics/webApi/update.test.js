@@ -1,14 +1,17 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
+const td = require('testdouble')
 const lab = exports.lab = Lab.script()
 
-const { describe, it, beforeEach } = lab
+const { describe, it, beforeEach, afterEach } = lab
 const { expect } = Code
 
 describe('Dynamics - update', async () => {
   let mock
   let passed
   let update
+
+  afterEach(td.reset)
 
   beforeEach(() => {
     passed = {
@@ -25,9 +28,6 @@ describe('Dynamics - update', async () => {
       builtHeaders: Symbol('built headers'),
       internals: {
         dynamics: {
-          got: async (options) => {
-            passed.got.options = options
-          },
           buildHeaders: async (headers) => {
             passed.buildHeaders.headers = headers
 
@@ -41,8 +41,15 @@ describe('Dynamics - update', async () => {
           },
           decodeResponse: response => response
         }
+      },
+      modules: {
+        got: async (options) => {
+          passed.got.options = options
+        }
       }
     }
+
+    td.replace('got', mock.modules.got)
 
     const Update = require('../../../../../lib/methods/dynamics/webApi/update')
 
@@ -57,10 +64,9 @@ describe('Dynamics - update', async () => {
         method: 'POST',
         url: mock.builtUrl,
         headers: mock.builtHeaders,
-        body: {
+        json: {
           UpdateEnrolmentStatus: 123
-        },
-        json: true
+        }
       }
 
       expect(request).to.equal(expectedRequestObj)

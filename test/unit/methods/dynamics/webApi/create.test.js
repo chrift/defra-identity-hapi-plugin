@@ -65,7 +65,7 @@ describe('Dynamics - create', () => {
       method: 'POST',
       url: mock.builtPath,
       headers: mock.builtHeaders,
-      body: {
+      json: {
         'defra_Organisation@odata.bind': `/accounts(${mock.organisationAccountId})`,
         'defra_connectiondetail@odata.bind': `/defra_connectiondetailses(${mock.connectionDetailsId})`,
         'defra_ServiceUser@odata.bind': `/contacts(${mock.contactId})`,
@@ -73,8 +73,7 @@ describe('Dynamics - create', () => {
         defra_verified: false,
         'defra_ServiceRole@odata.bind': `/defra_lobserivceroles(${mock.lobServiceRoleId})`,
         'defra_service@odata.bind': `/defra_lobservices(${mock.lobServiceId})`
-      },
-      json: true
+      }
     }))
   })
 })
