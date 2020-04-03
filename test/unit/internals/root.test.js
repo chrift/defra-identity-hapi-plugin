@@ -7,7 +7,7 @@ const { describe, it, beforeEach } = lab
 const { expect } = Code
 const rootMethods = require('../../../lib/internals/root')
 
-describe('Root', () => {
+describe('Internals - root', () => {
   let mock
   let passed
   let outcome

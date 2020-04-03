@@ -1,15 +1,18 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const uuid = require('uuid/v4')
+const td = require('testdouble')
 const lab = exports.lab = Lab.script()
 
-const { describe, it, beforeEach } = lab
+const { describe, it, beforeEach, afterEach } = lab
 const { expect } = Code
 
-describe('Dynamics - create', () => {
+describe('Dynamics - read', () => {
   let mock
   let passed
   let read
+
+  afterEach(td.reset)
 
   beforeEach(() => {
     passed = {
@@ -28,9 +31,6 @@ describe('Dynamics - create', () => {
       builtUrl: Symbol('built url'),
       internals: {
         dynamics: {
-          requestPromise: async (options) => {
-            passed.requestPromise.options = options
-          },
           buildHeaders: async (headers) => {
             passed.buildHeaders.headers = headers
 
@@ -45,12 +45,18 @@ describe('Dynamics - create', () => {
           decodeResponse: response => response,
           parseOptionalInteger: num => num,
           mappings: {
-            dateTimeStringToDate: string => string,
             serviceUserLinkStatusCode: { active: uuid() }
           }
         }
+      },
+      modules: {
+        got: async (options) => {
+          passed.got.options = options
+        }
       }
     }
+
+    td.replace('got', mock.modules.got)
 
     const Read = require('../../../../../lib/methods/dynamics/webApi/read')
 
@@ -369,7 +375,7 @@ describe('Dynamics - create', () => {
           telephoneNumber: '123',
           mobileNumber: '123',
           termsAcceptedVersion: '12',
-          termsAcceptedOn: '2018-09-17T10:34:00Z'
+          termsAcceptedOn: new Date('2018-09-17T10:34:00Z')
         }
       ]
 
