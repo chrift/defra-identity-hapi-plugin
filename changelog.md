@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.2.0 - 2 Apr 2020
+- CIDM-587
+  - Update existing and add new tests
+  - Remove unused mappings
+  - Replace request with got
+  - Github workflow to push to npm on merge to master branch
+
 ## 5.1.0 - 10 Mar 2020
 - CIDM-513 - Split demo service into its own repo
 
