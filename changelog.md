@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.2.1 - 5 Jun 2020
+- CIDM-947
+ - Removed reference to odata.maxpagesize as this was restricting results to 500 records
+
 ## 5.2.0 - 2 Apr 2020
 - CIDM-587
   - Update existing and add new tests
