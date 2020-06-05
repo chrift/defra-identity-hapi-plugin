@@ -130,7 +130,7 @@ describe('Internals - dynamics', () => {
         'Content-Type': 'application/json; charset=utf-8',
         'OData-MaxVersion': '4.0',
         'OData-Version': '4.0',
-        Prefer: 'odata.maxpagesize=500, odata.include-annotations="*"',
+        Prefer: 'odata.include-annotations="*"',
         ...mock.data.headers
       }))
     })
