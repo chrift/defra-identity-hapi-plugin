@@ -23,7 +23,7 @@ describe('Dynamics - read', () => {
         headers: null
       },
       got: {
-
+        options: null
       }
     }
 
