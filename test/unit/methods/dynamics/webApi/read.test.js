@@ -21,6 +21,9 @@ describe('Dynamics - read', () => {
       },
       buildHeaders: {
         headers: null
+      },
+      got: {
+
       }
     }
 
@@ -52,6 +55,7 @@ describe('Dynamics - read', () => {
       modules: {
         got: async (options) => {
           passed.got.options = options
+          return { value: [] }
         }
       }
     }
@@ -784,6 +788,27 @@ describe('Dynamics - read', () => {
         expect(outcome[0].status).to.equal(mock.response.value[0].statuscode)
         expect(outcome[0].state).to.equal(mock.response.value[0].statecode)
       })
+    })
+  })
+
+  describe('Read Accounts', () => {
+    it('should construct the correct request using account ids', async () => {
+      await read.readAccounts([123, 234, 345])
+
+      expect(passed.buildUrl.path).to.equal('/accounts')
+      expect('$filter' in passed.buildUrl.params).to.equal(true)
+      expect(passed.buildUrl.params.$filter).to.equal(' ( accountid eq 123 or accountid eq 234 or accountid eq 345 ) ')
+    })
+
+    it('should construct the correct request options', async () => {
+      await read.readAccounts([123, 234, 345])
+      const expectedOptions = {
+        method: 'GET',
+        url: mock.builtUrl,
+        headers: mock.builtHeaders
+      }
+
+      expect(passed.got.options).to.equal(expectedOptions)
     })
   })
 })
