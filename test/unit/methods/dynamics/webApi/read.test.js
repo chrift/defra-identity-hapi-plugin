@@ -796,7 +796,6 @@ describe('Dynamics - read', () => {
       await read.readAccounts([123, 234, 345])
 
       expect(passed.buildUrl.path).to.equal('/accounts')
-      expect('$filter' in passed.buildUrl.params).to.equal(true)
       expect(passed.buildUrl.params.$filter).to.equal(' ( accountid eq 123 or accountid eq 234 or accountid eq 345 ) ')
     })
 
