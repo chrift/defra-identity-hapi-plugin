@@ -1,6 +1,6 @@
 {
   "name": "@envage/defra-identity-hapi-plugin",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "A hapi auth plugin to allow easy integration with DEFRA's Identity Management system",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   },
   "main": "./lib/index.js",
   "scripts": {
-    "test": "npx @hapi/lab -v",
+    "test": "npx @hapi/lab -v -I",
     "lint": "eslint . --cache",
     "test:lcov": "npx @hapi/lab -vc -r lcov -o coverage.lcov",
     "test:analyse": "npm run test:lcov && gulp analyse"
