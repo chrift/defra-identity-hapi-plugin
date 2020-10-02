@@ -35,20 +35,20 @@
     "await-to-js": "^2.0.1",
     "debug": "^3.1.0",
     "got": "^10.7.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "md5": "^2.2.1",
-    "openid-client": "^2.4.5",
+    "openid-client": "^4.1.1",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
     "@hapi/code": "^8.0.1",
     "@hapi/lab": "^22.0.3",
     "eslint": "^6.4.0",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-cli": "^2.0.1",
     "pre-commit": "^1.2.2",
     "snazzy": "^7.1.1",
-    "sonarqube-scanner": "^2.5.0",
+    "sonarqube-scanner": "^2.7.0",
     "standard": "^14.3.1",
     "testdouble": "^3.13.0"
   }
