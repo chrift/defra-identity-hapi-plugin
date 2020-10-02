@@ -1,6 +1,6 @@
 {
   "name": "@envage/defra-identity-hapi-plugin",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "A hapi auth plugin to allow easy integration with DEFRA's Identity Management system",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   },
   "main": "./lib/index.js",
   "scripts": {
-    "test": "npx @hapi/lab -v",
+    "test": "npx @hapi/lab -v -I",
     "lint": "eslint . --cache",
     "test:lcov": "npx @hapi/lab -vc -r lcov -o coverage.lcov",
     "test:analyse": "npm run test:lcov && gulp analyse"
@@ -35,20 +35,20 @@
     "await-to-js": "^2.0.1",
     "debug": "^3.1.0",
     "got": "^10.7.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.15",
     "md5": "^2.2.1",
-    "openid-client": "^4.1.1",
+    "openid-client": "^2.4.5",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
     "@hapi/code": "^8.0.1",
     "@hapi/lab": "^22.0.3",
     "eslint": "^6.4.0",
-    "gulp": "^4.0.2",
-    "gulp-cli": "^2.0.1",
+    "gulp": "^4.0.0",
+    "gulp-cli": "^2.3.0",
     "pre-commit": "^1.2.2",
     "snazzy": "^7.1.1",
-    "sonarqube-scanner": "^2.7.0",
+    "sonarqube-scanner": "^2.6.0",
     "standard": "^14.3.1",
     "testdouble": "^3.13.0"
   }
