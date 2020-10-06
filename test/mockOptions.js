@@ -34,5 +34,6 @@ module.exports = {
   onByDefault: true,
   defaultBackToPath: uuid(),
   postAuthenticationRedirectJsPath: uuid(),
-  defaultScope: uuid()
+  defaultScope: uuid(),
+  retryDelayMultiplierSecs: 5
 }
