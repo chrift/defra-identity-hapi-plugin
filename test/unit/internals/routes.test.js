@@ -32,10 +32,11 @@ describe('Internals - routes', () => {
             }
           }
         },
+        claims: {
+          sub: Symbol('sub')
+        },
         tokenSet: {
-          claims: {
-            sub: Symbol('sub')
-          }
+          claims: () => mock.claims
         },
         cache: {
           set: (key, value, ttl, request) => {
@@ -58,7 +59,7 @@ describe('Internals - routes', () => {
       expect(passed.cache.key).to.be.a.string()
       expect(passed.cache.value).to.equal({
         tokenSet: mock.tokenSet,
-        claims: mock.tokenSet.claims
+        claims: mock.claims
       })
       expect(passed.cache.ttl).to.be.undefined()
       expect(passed.cache.request).to.equal(mock.request)
@@ -78,16 +79,16 @@ describe('Internals - routes', () => {
         cookieAuth: { set: x => { spyRequestSet = x } },
         state: { testCookieAuth: { cacheKey: 'cache-key-cache-key' } }
       }
-      const stubTokenSet = { claims: 'claims-claims-claims' }
+      const stubClaims = 'claims-claims-claims'
+
+      const stubTokenSet = { claims: () => stubClaims }
       await routeMethods.storeTokenSetResponse(mockRequest, stubTokenSet)
 
       expect(spyCacheSet).to.equal([
         'cache-key-cache-key',
         {
-          claims: 'claims-claims-claims',
-          tokenSet: {
-            claims: 'claims-claims-claims'
-          }
+          claims: stubClaims,
+          tokenSet: stubTokenSet
         },
         undefined,
         mockRequest
@@ -181,10 +182,11 @@ describe('Internals - routes', () => {
       }
 
       const mock = {
+        claims: {
+          sub: Symbol('sub')
+        },
         tokenSet: {
-          claims: {
-            sub: Symbol('sub')
-          }
+          claims: () => mock.claims
         },
         state: Symbol('state'),
         savedState: {

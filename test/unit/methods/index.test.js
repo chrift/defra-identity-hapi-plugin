@@ -53,8 +53,21 @@ describe('Methods', () => {
       },
       refreshToken: {
         refreshToken: null
+      },
+      retryable: {
+        toExecute: null,
+        callback: null
       }
     }
+
+    const mockRetryable = (toExecute, callback) => {
+      passed.retryable.toExecute = toExecute
+      passed.retryable.callback = callback
+
+      return toExecute()
+    }
+
+    mockRetryable.b2cRequestRetry = Symbol('b2cRequestRetry')
 
     mock = {
       server: {
@@ -128,6 +141,9 @@ describe('Methods', () => {
             passed.storeTokenSetResponse.request = request
             passed.storeTokenSetResponse.refreshedTokenSet = refreshedTokenSet
           }
+        },
+        root: {
+          retryable: mockRetryable
         }
       },
       request: {
@@ -261,6 +277,10 @@ describe('Methods', () => {
     it('should get the oidc client object', () => expect(passed.getClient.options).to.equal({
       policyName: existingCredentials.claims.tfp
     }))
+    it('should use retryable to execute the refresh', () => {
+      expect(passed.retryable.toExecute).to.be.a.function()
+      expect(passed.retryable.callback).to.equal(mock.internals.root.retryable.b2cRequestRetry)
+    })
     it('should refresh the token', () => expect(passed.refreshToken.refreshToken).to.equal(existingCredentials.tokenSet.refresh_token))
     it('should fetch the user\'s roles', () => expect(passed.readServiceEnrolment).to.equal({
       serviceId: mock.config.serviceId,

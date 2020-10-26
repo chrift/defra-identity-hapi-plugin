@@ -2,9 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.2.3 - 6 Oct 2020
+- CIDM-1468
+  - Retry failed B2C requests - only throw error after iteration limit is hit
+  - Upgrade openid-client to latest version
+  - NPM audit fixes
+
+## 5.2.2 - 12 Jun 2020
+- CIDM-946
+  - Split large queries into chunks to prevent exceeding the max querystring size and prevent dynamics receiving a single large request
+ 
 ## 5.2.1 - 5 Jun 2020
 - CIDM-947
- - Removed reference to odata.maxpagesize as this was restricting results to 500 records
+  - Removed reference to odata.maxpagesize as this was restricting results to 500 records
 
 ## 5.2.0 - 2 Apr 2020
 - CIDM-587
