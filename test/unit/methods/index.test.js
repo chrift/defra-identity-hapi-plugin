@@ -44,6 +44,9 @@ describe('Methods', () => {
         request: null,
         refreshedTokenSet: null
       },
+      sanitiseTokenSet: {
+        tokenSet: null
+      },
       authorizationUrl: {
         options: null
       },
@@ -140,6 +143,11 @@ describe('Methods', () => {
           storeTokenSetResponse: async (request, refreshedTokenSet) => {
             passed.storeTokenSetResponse.request = request
             passed.storeTokenSetResponse.refreshedTokenSet = refreshedTokenSet
+          },
+          sanitiseTokenSet: (tokenSet) => {
+            passed.sanitiseTokenSet.tokenSet = tokenSet
+
+            return tokenSet
           }
         },
         root: {
