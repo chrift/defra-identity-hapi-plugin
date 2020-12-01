@@ -16,6 +16,9 @@ describe('Dynamics - read', () => {
 
   beforeEach(() => {
     passed = {
+      got: {
+        options: null
+      },
       buildUrl: {
         path: null
       },
@@ -29,6 +32,7 @@ describe('Dynamics - read', () => {
       decodedResponse: Symbol('decoded response'),
       builtHeaders: Symbol('built headers'),
       builtUrl: Symbol('built url'),
+      gotResponse: undefined,
       internals: {
         dynamics: {
           buildHeaders: async (headers) => {
@@ -52,6 +56,8 @@ describe('Dynamics - read', () => {
       modules: {
         got: async (options) => {
           passed.got.options = options
+
+          return mock.gotResponse
         }
       }
     }
@@ -628,6 +634,55 @@ describe('Dynamics - read', () => {
       expect(passed.buildUrl.params).to.equal({
         $filter: `( _defra_serviceuser_value eq c20e6efe-9954-4c5b-a76c-83a5518a1385 ) and statuscode eq ${mock.internals.dynamics.mappings.serviceUserLinkStatusCode.active} and ( _defra_organisation_value eq c20e6efe-9954-4c5b-a76c-83a5518a1385 or _defra_organisation_value eq c20e6efe-9954-4c5b-a76c-83a5518a1385 )`,
         $expand: 'defra_ServiceRole'
+      })
+    })
+
+    describe('readEnrolment', () => {
+      it('should merge all request responses', async () => {
+        const passed = {
+          buildRequest: {
+            contactIds: [],
+            serviceRoleIds: [],
+            accountIds: [],
+            serviceUserLinkIds: [],
+            serviceIds: [],
+            includeAllServiceRecords: null
+          }
+        }
+
+        mock.gotResponse = new Promise((resolve) => resolve({
+          value: [123]
+        }))
+
+        read.readEnrolment.buildRequest = async (contactIds, serviceRoleIds, accountIds, serviceUserLinkIds, serviceIds, includeAllServiceRecords) => {
+          passed.buildRequest.contactIds.push(contactIds)
+          passed.buildRequest.serviceRoleIds.push(serviceRoleIds)
+          passed.buildRequest.accountIds.push(accountIds)
+          passed.buildRequest.serviceUserLinkIds.push(serviceUserLinkIds)
+          passed.buildRequest.serviceIds.push(serviceIds)
+          passed.buildRequest.includeAllServiceRecords = includeAllServiceRecords
+        }
+
+        const data = {
+          contactIds: [1, 2, 3],
+          serviceRoleIds: [4, 5, 6],
+          accountIds: [7, 8, 9],
+          serviceUserLinkIds: [10, 11, 12],
+          serviceIds: [13, 14, 15],
+          includeAllServiceRecords: false
+        }
+
+        const outcome = await read.readEnrolment(data.contactIds, data.serviceRoleIds, data.accountIds, data.serviceUserLinkIds, data.serviceIds, data.includeAllServiceRecords)
+
+        expect(outcome).to.equal({
+          value: [123]
+        })
+        expect(passed.buildRequest.contactIds).to.equal([data.contactIds])
+        expect(passed.buildRequest.serviceRoleIds).to.equal([data.serviceRoleIds])
+        expect(passed.buildRequest.accountIds).to.equal([data.accountIds])
+        expect(passed.buildRequest.serviceUserLinkIds).to.equal([data.serviceUserLinkIds])
+        expect(passed.buildRequest.serviceIds).to.equal([data.serviceIds])
+        expect(passed.buildRequest.includeAllServiceRecords).to.equal(data.includeAllServiceRecords)
       })
     })
   })
