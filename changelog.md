@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.2.4 - 1 Dec 2020
+- CIDM-1865 - Fix to refreshing enrolments and storing them in claims
+
 ## 5.2.3 - 6 Oct 2020
 - CIDM-1468
   - Retry failed B2C requests - only throw error after iteration limit is hit

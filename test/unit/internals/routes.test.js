@@ -10,6 +10,29 @@ const { expect } = Code
 const RouteMethods = require('../../../lib/internals/routes')
 
 describe('Internals - routes', () => {
+  describe('sanitiseTokenSet', () => {
+    describe('When a claims function is passed', () => {
+      it('should set the claims function response as the claims value', () => {
+        const claims = {
+          abc: 321
+        }
+        const tokenSet = {
+          claims: () => claims
+        }
+
+        const routeMethods = RouteMethods({
+          cache: {},
+          config: {}
+        })
+
+        const output = routeMethods.sanitiseTokenSet(tokenSet)
+
+        expect(output).to.equal({
+          claims
+        })
+      })
+    })
+  })
   describe('storeTokenSetResponse', async () => {
     it('should store tokenSet in cache and in cookieAuth', async () => {
       const passed = {
