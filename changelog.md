@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.2.5 - 14 Jan 2021
+- CIDM-1982
+  - Add ability to suppress login screen if user already has a valid session on the identity provider
+
 ## 5.2.4 - 1 Dec 2020
 - CIDM-1865 - Fix to refreshing enrolments and storing them in claims
 
