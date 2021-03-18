@@ -160,6 +160,9 @@ describe('Methods', () => {
           clear: () => {
             passed.cookieAuthClear.called = true
           }
+        },
+        query: {
+          _ga: uuid()
         }
       },
       cacheData: {},
@@ -240,10 +243,14 @@ describe('Methods', () => {
 
   describe('generateAuthenticationUrl', () => {
     beforeEach(() => {
-      outcome = passed.methods['idm.generateAuthenticationUrl'](null, { returnUrlObject: true })
-    })
+      outcome = passed.methods['idm.generateAuthenticationUrl'](null, {
+        returnUrlObject: true,
+        _ga: mock.request.query._ga
+      })
 
-    it('should return a url object', () => expect(outcome).to.be.an.instanceOf(URL))
+      it('should return a url object', () => expect(outcome).to.be.an.instanceOf(URL))
+      it('should include the _ga parameter', () => expect(outcome.searchParams._ga).to.equal(mock.request.query._ga))
+    })
   })
 
   describe('logout', () => {
@@ -312,7 +319,7 @@ describe('Methods', () => {
     beforeEach(async () => {
       state = uuid()
 
-      outcome = await passed.methods['idm.generateOutboundRedirectUrl'](mock.request, {}, { state })
+      outcome = await passed.methods['idm.generateOutboundRedirectUrl'](mock.request, { _ga: mock.request.query._ga }, { state })
     })
 
     it('should set the state in cache', () => expect(passed.cacheSet).to.equal({
@@ -341,7 +348,8 @@ describe('Methods', () => {
       policyName: mock.config.defaultPolicy,
       journey: mock.config.defaultJourney,
       serviceId: mock.config.serviceId,
-      nonce: undefined
+      nonce: undefined,
+      _ga: mock.request.query._ga
     }))
   })
 })
