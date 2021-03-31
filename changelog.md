@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.2.8 - 31 Mar 2021
+- Update tests for clock_tolerance setting
+
 ## 5.2.7 - 22 Mar 2021
 - Update clock_tolerance setting
 
